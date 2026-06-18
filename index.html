@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#3C2A6B">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="經典智慧">
-<meta name="description" content="匯聚一貫道仙佛聖訓與東西方千年經典智慧">
+<meta name="apple-mobile-web-app-title" content="經典日常">
+<meta name="description" content="千年經典，日常智慧。儒釋道與五大傳統的生活哲學">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<title>🏮 經典智慧</title>
+<title>🏮 經典日常</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
@@ -202,8 +202,8 @@ html,body{height:100%;background:var(--bg-tertiary);font-family:var(--sans);colo
       <div class="hdr-brand">
         <span class="hdr-logo">🏮</span>
         <div>
-          <div class="hdr-title">經典智慧</div>
-          <div class="hdr-sub">發一崇德・仙佛聖訓</div>
+          <div class="hdr-title">經典日常</div>
+          <div class="hdr-sub">千年智慧・日常實踐</div>
         </div>
       </div>
       <div class="hdr-date" id="hdrDate"></div>
@@ -230,7 +230,7 @@ html,body{height:100%;background:var(--bg-tertiary);font-family:var(--sans);colo
     <!-- ===== HOME ===== -->
     <div class="scr on" id="s-home">
 
-      <div class="lbl">✨ 今日仙佛聖訓</div>
+      <div class="lbl">✨ 今日經典</div>
       <div class="daily-banner" id="dailyCard">
         <!-- filled by JS -->
       </div>
@@ -371,8 +371,8 @@ html,body{height:100%;background:var(--bg-tertiary);font-family:var(--sans);colo
 // ===== DATA =====
 // ===== SUPABASE 設定 =====
 // ★ 填入你的 Supabase 設定（在 Supabase → Settings → API 找）
-const SB_URL = 'https://abcdefghij.supabase.co';   // 例如 https://abcdefg.supabase.co
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2bmZ3Z3pubmd1a3JrcmFvbGhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1ODkwMjksImV4cCI6MjA5NzE2NTAyOX0.1vbMJv9DKYxru5omBwq2FHPEMf08jtLzb-LnmvtPfK0';       // eyJ 開頭那串
+const SB_URL = '你的Supabase網址';   // 例如 https://abcdefg.supabase.co
+const SB_KEY = '你的anon_key';       // eyJ 開頭那串
 
 // 從 Supabase 讀取資料的共用函式
 async function sbFetch(table, params = '') {
@@ -664,17 +664,30 @@ function initDate() {
 }
 
 function initDaily() {
+  // 防空白保護：DAILY 為空時用備用資料
+  if (!DAILY || DAILY.length === 0) {
+    DAILY = Object.values(TEACHINGS).filter(t => t).slice(0, 4);
+  }
+  if (!DAILY || DAILY.length === 0) {
+    document.getElementById('dailyCard').innerHTML = `
+      <div class="daily-label">✨ 今日經典</div>
+      <div class="daily-quote" style="font-size:14px;color:var(--text-secondary)">載入中，請稍候…</div>
+    `;
+    return;
+  }
   const idx = new Date().getDate() % DAILY.length;
   const d = DAILY[idx];
+  if (!d) return;
+  const key = Object.keys(TEACHINGS).find(k => TEACHINGS[k] === d) || '';
   document.getElementById('dailyCard').innerHTML = `
-    <div class="daily-label">✨ 今日仙佛聖訓</div>
+    <div class="daily-label">✨ 今日經典</div>
     <span class="bdg ${d.badge}" style="margin-bottom:10px">${d.badgeTxt}</span>
     <div class="daily-quote">${d.q}</div>
     <div class="daily-src">${d.s}</div>
-    <div class="daily-meaning">點擊下方「三層解析」深入理解這段訓文的現代意涵與各宗教共鳴。</div>
+    <div class="daily-meaning">點擊下方「三層解析」深入理解這段經典的現代意涵與各宗教共鳴。</div>
     <div class="arow" style="margin-top:12px">
-      <button class="btn" onclick="saveItem('${Object.keys(TEACHINGS).find(k=>TEACHINGS[k]===d)}')"><i class="ti ti-bookmark"></i>收藏</button>
-      <button class="btn btn-p" onclick="openDet('${Object.keys(TEACHINGS).find(k=>TEACHINGS[k]===d)}')"><i class="ti ti-layers-intersect"></i>三層解析</button>
+      <button class="btn" onclick="saveItem('${key}')"><i class="ti ti-bookmark"></i>收藏</button>
+      <button class="btn btn-p" onclick="openDet('${key}')"><i class="ti ti-layers-intersect"></i>三層解析</button>
     </div>
   `;
 }
@@ -823,6 +836,9 @@ function showToast(msg) {
 
 // ===== SEND PROMPT =====
 function sendPrompt(text) {
+  showToast('🤖 正在開啟 AI 智慧解析…');
+  setTimeout(() => { window.open('https://claude.ai/new?q=' + encodeURIComponent(text), '_blank'); }, 600);
+  return;
   window.parent?.postMessage({type:'user_message',message:text},'*');
 }
 
