@@ -692,21 +692,55 @@ function initDaily() {
   `;
 }
 
-function initVerseList(trad) {
-  const keys = VERSES_BY_TRAD[trad] || [];
-  const titles = {yi:'一貫道仙佛聖訓 — 發一崇德',cf:'儒家 — 四書五經',tao:'道家 — 道德經',bd:'佛教 — 般若諸經',bi:'基督教 — 新舊約',more:'更多典籍 — 即將收錄'};
-  document.getElementById('libLabel').textContent = titles[trad]||'典籍';
-  if (!keys.length) {
+async function initVerseList(trad) {
+  const titles = {yi:'一貫道仙佛聖訓 — 發一崇德', cf:'儒家 — 四書五經', tao:'道家 — 道德經', bd:'佛教 — 般若諸經', bi:'基督教 — 新舊約', more:'更多典籍 — 即將收錄'};
+  const tradDbMap = {yi:'yi', cf:'confucius', tao:'tao', bd:'buddha', bi:'christian', more:null};
+  document.getElementById('libLabel').textContent = titles[trad] || '典籍';
+
+  if (trad === 'more') {
     document.getElementById('verseList').innerHTML = `<div class="card" style="text-align:center;color:var(--text-tertiary);font-size:13px">🚧 此典籍即將收錄，敬請期待</div>`;
     return;
   }
-  document.getElementById('verseList').innerHTML = keys.map(k => {
-    const t = TEACHINGS[k];
-    return `<div class="vi" onclick="openDet('${k}')">
-      <div class="vq">${t.q.length > 60 ? t.q.slice(0,60)+'…」' : t.q}</div>
-      <div class="vm"><i class="ti ti-file-text" style="font-size:13px"></i>${t.s.split('・')[0]} · 三層解析 ↗</div>
-    </div>`;
-  }).join('');
+
+  // 顯示載入中
+  document.getElementById('verseList').innerHTML = `<div class="card" style="text-align:center;color:var(--text-tertiary);font-size:13px">🔄 載入中...</div>`;
+
+  try {
+    const dbTrad = tradDbMap[trad];
+    const data = await sbFetch('teachings', `select=id,quote,quote_source,tradition_code&eq.tradition_code=${dbTrad}&order=id`);
+
+    if (!data || data.length === 0) {
+      document.getElementById('verseList').innerHTML = `<div class="card" style="text-align:center;color:var(--text-tertiary);font-size:13px">🚧 此典籍即將收錄，敬請期待</div>`;
+      return;
+    }
+
+    document.getElementById('verseList').innerHTML = data.map(row => {
+      const key = `${row.tradition_code}_${row.id}`;
+      // 確保 TEACHINGS 有這筆資料
+      if (!TEACHINGS[key]) TEACHINGS[key] = convertTeaching(row);
+      const q = row.quote;
+      const s = row.quote_source;
+      return `<div class="vi" onclick="openDet('${key}')">
+        <div class="vq">${q.length > 60 ? q.slice(0,60)+'…」' : q}</div>
+        <div class="vm"><i class="ti ti-file-text" style="font-size:13px"></i>${s.split('・')[0]} · 三層解析 ↗</div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    // 備用：用記憶體資料
+    const keys = VERSES_BY_TRAD[trad] || [];
+    if (!keys.length) {
+      document.getElementById('verseList').innerHTML = `<div class="card" style="text-align:center;color:var(--text-tertiary);font-size:13px">🚧 此典籍即將收錄，敬請期待</div>`;
+      return;
+    }
+    document.getElementById('verseList').innerHTML = keys.map(k => {
+      const t = TEACHINGS[k];
+      if (!t) return '';
+      return `<div class="vi" onclick="openDet('${k}')">
+        <div class="vq">${t.q.length > 60 ? t.q.slice(0,60)+'…」' : t.q}</div>
+        <div class="vm"><i class="ti ti-file-text" style="font-size:13px"></i>${t.s.split('・')[0]} · 三層解析 ↗</div>
+      </div>`;
+    }).join('');
+  }
 }
 
 function initSaved() {
