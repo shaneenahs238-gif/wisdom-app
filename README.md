@@ -1,2 +1,2 @@
 # wisdom-app
-五教聖人經典智慧 App
+經典日常 App
