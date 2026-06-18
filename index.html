@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#3C2A6B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="經典智慧">
+<meta name="description" content="匯聚一貫道仙佛聖訓與東西方千年經典智慧">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>🏮 經典智慧</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+<style>
+:root{
+  --purple:#3C2A6B;
+  --purple-mid:#534AB7;
+  --purple-light:#7F77DD;
+  --purple-bg:#EEEDFE;
+  --purple-border:#AFA9EC;
+  --gold:#B8943F;
+  --gold-light:#F5E6C0;
+  --gold-bg:#FDF8EE;
+  --teal:#0F6E56;
+  --teal-bg:#E1F5EE;
+  --amber:#854F0B;
+  --amber-bg:#FAEEDA;
+  --blue:#0C447C;
+  --blue-bg:#E6F1FB;
+  --rose:#72243E;
+  --rose-bg:#FBEAF0;
+  --text-primary:#1A1523;
+  --text-secondary:#5C5470;
+  --text-tertiary:#9C95B0;
+  --bg-primary:#FFFFFF;
+  --bg-secondary:#F7F5FC;
+  --bg-tertiary:#F0EDF9;
+  --border:#E2DCEF;
+  --border-light:#EDE9F6;
+  --radius-sm:8px;
+  --radius-md:12px;
+  --radius-lg:16px;
+  --radius-xl:24px;
+  --serif:'Noto Serif TC',Georgia,serif;
+  --sans:'Noto Sans TC','PingFang TC',sans-serif;
+  --shadow:0 2px 12px rgba(60,42,107,0.10);
+  --shadow-md:0 4px 20px rgba(60,42,107,0.15);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:var(--bg-tertiary);font-family:var(--sans);color:var(--text-primary);overflow:hidden;}
+
+/* ===== APP SHELL ===== */
+.app{display:flex;flex-direction:column;height:100vh;max-width:430px;margin:0 auto;background:var(--bg-tertiary);position:relative;}
+
+/* ===== HEADER ===== */
+.hdr{background:var(--purple);padding:env(safe-area-inset-top,16px) 20px 14px;flex-shrink:0;}
+.hdr-inner{display:flex;align-items:center;justify-content:space-between;}
+.hdr-brand{display:flex;align-items:center;gap:8px;}
+.hdr-logo{font-size:22px;}
+.hdr-title{font-size:17px;font-weight:500;color:#fff;letter-spacing:0.05em;}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,0.65);margin-top:1px;}
+.hdr-date{font-size:11px;color:rgba(255,255,255,0.6);text-align:right;}
+
+/* ===== TABS ===== */
+.tabs{display:flex;background:var(--bg-primary);border-bottom:1px solid var(--border-light);flex-shrink:0;box-shadow:0 1px 0 var(--border-light);}
+.tab{flex:1;padding:10px 4px 8px;font-size:10px;color:var(--text-tertiary);border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:var(--sans);transition:color 0.15s;position:relative;}
+.tab i{font-size:20px;}
+.tab.on{color:var(--purple-mid);}
+.tab.on::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2px;background:var(--purple-mid);border-radius:2px 2px 0 0;}
+
+/* ===== SCROLL BODY ===== */
+.body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px calc(env(safe-area-inset-bottom,0px) + 14px);}
+.scr{display:none;}
+.scr.on{display:block;}
+
+/* ===== SHARED COMPONENTS ===== */
+.lbl{font-size:10px;font-weight:500;color:var(--text-tertiary);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;margin-top:2px;}
+.card{background:var(--bg-primary);border-radius:var(--radius-lg);border:1px solid var(--border-light);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);}
+.divider{height:1px;background:var(--border-light);margin:14px 0;}
+.full-btn{width:100%;padding:12px;font-size:13px;font-weight:500;border:1px solid var(--purple-border);border-radius:var(--radius-md);background:var(--purple-bg);color:var(--purple);cursor:pointer;font-family:var(--sans);margin-top:6px;display:flex;align-items:center;justify-content:center;gap:6px;transition:background 0.15s;}
+.full-btn:active{background:#CECBF6;}
+
+/* ===== BADGES ===== */
+.bdg{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;margin-bottom:10px;letter-spacing:0.03em;}
+.b-yi{background:var(--purple-bg);color:var(--purple);}
+.b-cf{background:var(--rose-bg);color:var(--rose);}
+.b-tao{background:var(--amber-bg);color:var(--amber);}
+.b-bd{background:var(--teal-bg);color:var(--teal);}
+.b-bi{background:var(--blue-bg);color:var(--blue);}
+
+/* ===== QUOTE ===== */
+.qt{font-family:var(--serif);font-size:16px;color:var(--text-primary);line-height:2.0;letter-spacing:0.06em;margin-bottom:6px;}
+.qs{font-size:11px;color:var(--text-tertiary);margin-bottom:2px;}
+.qm{font-size:13px;color:var(--text-secondary);line-height:1.7;margin-top:10px;padding-top:10px;border-top:1px solid var(--border-light);}
+
+/* ===== ACTION ROW ===== */
+.arow{display:flex;gap:7px;margin-top:12px;}
+.btn{flex:1;padding:8px 4px;font-size:11px;border:1px solid var(--border);border-radius:var(--radius-sm);background:none;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px;font-family:var(--sans);transition:background 0.15s;}
+.btn:active{background:var(--bg-secondary);}
+.btn-p{background:var(--purple-bg);color:var(--purple);border-color:var(--purple-border);font-weight:500;}
+.btn-p:active{background:#CECBF6;}
+
+/* ===== VERSE ITEM ===== */
+.vi{background:var(--bg-primary);border-radius:var(--radius-md);border:1px solid var(--border-light);padding:13px 14px;margin-bottom:8px;cursor:pointer;transition:border-color 0.15s,box-shadow 0.15s;box-shadow:var(--shadow);}
+.vi:active{border-color:var(--purple-border);box-shadow:var(--shadow-md);}
+.vq{font-size:14px;color:var(--text-primary);line-height:1.7;font-family:var(--serif);}
+.vm{font-size:11px;color:var(--text-tertiary);margin-top:5px;display:flex;align-items:center;gap:4px;}
+
+/* ===== TRADITION GRID ===== */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px;}
+.tc{background:var(--bg-primary);border-radius:var(--radius-lg);border:1px solid var(--border-light);padding:14px 12px;cursor:pointer;transition:all 0.15s;box-shadow:var(--shadow);}
+.tc.sel{border-color:var(--purple-mid);border-width:1.5px;background:var(--purple-bg);}
+.tc:active{transform:scale(0.98);}
+.ti2{font-size:22px;margin-bottom:5px;}
+.tn{font-size:13px;font-weight:500;color:var(--text-primary);}
+.ts2{font-size:11px;color:var(--text-tertiary);margin-top:2px;}
+
+/* ===== LOT ===== */
+.lot-hero{background:linear-gradient(135deg,var(--purple) 0%,var(--purple-mid) 100%);border-radius:var(--radius-xl);padding:28px 20px;text-align:center;margin-bottom:12px;box-shadow:var(--shadow-md);}
+.lot-title{font-size:16px;font-weight:500;color:#fff;margin-bottom:5px;}
+.lot-sub{font-size:12px;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:22px;}
+.shake-btn{background:#fff;color:var(--purple);border:none;border-radius:var(--radius-lg);padding:13px 32px;font-size:15px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:transform 0.1s,box-shadow 0.1s;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.shake-btn:active{transform:scale(0.97);}
+@keyframes shake{0%,100%{transform:rotate(0deg)}20%{transform:rotate(-10deg)}40%{transform:rotate(10deg)}60%{transform:rotate(-6deg)}80%{transform:rotate(6deg)}}
+.shaking{animation:shake 0.55s ease;}
+.lot-result{background:var(--bg-primary);border-radius:var(--radius-lg);border:1px solid var(--border-light);padding:18px;margin-bottom:12px;display:none;box-shadow:var(--shadow);}
+.lot-result.on{display:block;}
+.lot-num{font-size:13px;font-weight:500;color:var(--purple-mid);letter-spacing:0.1em;margin-bottom:8px;}
+.lot-quote{font-family:var(--serif);font-size:16px;color:var(--text-primary);line-height:1.9;margin-bottom:8px;letter-spacing:0.04em;}
+.lot-src{font-size:11px;color:var(--text-tertiary);margin-bottom:10px;}
+.lot-interp{font-size:13px;color:var(--text-secondary);line-height:1.7;padding:10px 12px;background:var(--purple-bg);border-radius:var(--radius-sm);}
+
+/* ===== SEARCH ===== */
+.sb{display:flex;align-items:center;gap:8px;background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-md);padding:9px 13px;margin-bottom:10px;box-shadow:var(--shadow);}
+.sb input{border:none;background:none;flex:1;font-size:14px;color:var(--text-primary);outline:none;font-family:var(--sans);}
+.frow{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
+.frow::-webkit-scrollbar{display:none;}
+.chip{white-space:nowrap;padding:5px 12px;border-radius:20px;font-size:12px;border:1px solid var(--border);background:var(--bg-primary);color:var(--text-secondary);cursor:pointer;font-family:var(--sans);transition:all 0.15s;}
+.chip.on{background:var(--purple-bg);color:var(--purple);border-color:var(--purple-border);font-weight:500;}
+
+/* ===== DETAIL PAGE ===== */
+.back-btn{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--purple-mid);cursor:pointer;margin-bottom:14px;border:none;background:none;padding:4px 0;font-family:var(--sans);}
+.dqb{border-left:3px solid var(--purple-mid);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:13px 16px;margin-bottom:14px;background:var(--purple-bg);}
+.dqb p{font-family:var(--serif);font-size:16px;color:var(--purple);line-height:1.9;letter-spacing:0.06em;}
+.dqb span{font-size:11px;color:var(--purple-mid);display:block;margin-top:5px;}
+.crow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:14px;}
+.cc{background:var(--bg-primary);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:12px 8px;text-align:center;box-shadow:var(--shadow);}
+.cz{font-size:26px;font-family:var(--serif);color:var(--purple-mid);font-weight:500;}
+.cp{font-size:10px;color:var(--purple-light);margin:2px 0 5px;letter-spacing:0.05em;}
+.cm{font-size:11px;color:var(--text-secondary);line-height:1.4;}
+.lc{background:var(--bg-primary);border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:14px;margin-bottom:9px;display:flex;gap:12px;align-items:flex-start;box-shadow:var(--shadow);}
+.lic{width:36px;height:36px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.lt{font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:4px;}
+.ld{font-size:12px;color:var(--text-secondary);line-height:1.6;}
+.ltip{font-size:11px;color:var(--purple);margin-top:7px;padding:6px 9px;background:var(--purple-bg);border-radius:var(--radius-sm);line-height:1.5;}
+.xc{background:var(--bg-primary);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow);}
+.xs{font-size:10px;font-weight:500;color:var(--text-tertiary);letter-spacing:0.05em;margin-bottom:5px;}
+.xq{font-size:13px;color:var(--text-primary);line-height:1.6;font-family:var(--serif);}
+.xl{font-size:11px;color:var(--purple-mid);margin-top:4px;}
+
+/* ===== DAILY BANNER ===== */
+.daily-banner{background:linear-gradient(135deg,var(--gold-bg) 0%,#FFF8E8 100%);border:1px solid #E8D5A0;border-radius:var(--radius-xl);padding:20px;margin-bottom:12px;box-shadow:var(--shadow);}
+.daily-label{font-size:10px;font-weight:500;color:var(--gold);letter-spacing:0.1em;margin-bottom:10px;}
+.daily-quote{font-family:var(--serif);font-size:17px;color:var(--text-primary);line-height:2.0;letter-spacing:0.06em;margin-bottom:6px;}
+.daily-src{font-size:11px;color:var(--gold);}
+.daily-meaning{font-size:13px;color:var(--text-secondary);line-height:1.7;margin-top:10px;padding-top:10px;border-top:1px solid #E8D5A0;}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--purple);color:#fff;padding:9px 18px;border-radius:20px;font-size:13px;opacity:0;transition:all 0.3s;pointer-events:none;z-index:999;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ===== SOURCE TAG ===== */
+.src-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--purple-mid);background:var(--purple-bg);padding:2px 7px;border-radius:10px;text-decoration:none;}
+.src-tag:hover{text-decoration:underline;}
+
+/* ===== SCROLLBAR ===== */
+.body::-webkit-scrollbar{width:3px;}
+.body::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+/* ===== CROSS THEME CARD ===== */
+.theme-card{background:var(--bg-primary);border-radius:var(--radius-lg);border:1px solid var(--border-light);padding:15px;margin-bottom:10px;cursor:pointer;box-shadow:var(--shadow);}
+.theme-title{font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.theme-desc{font-size:12px;color:var(--text-secondary);line-height:1.6;}
+.tag-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+
+/* ===== INSTALL BANNER ===== */
+.install-banner{background:var(--purple);border-radius:var(--radius-lg);padding:13px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;display:none;}
+.install-banner.show{display:flex;}
+.install-text{font-size:12px;color:#fff;line-height:1.5;}
+.install-btn{background:#fff;color:var(--purple);border:none;border-radius:var(--radius-sm);padding:7px 14px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:var(--sans);}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-inner">
+      <div class="hdr-brand">
+        <span class="hdr-logo">🏮</span>
+        <div>
+          <div class="hdr-title">經典智慧</div>
+          <div class="hdr-sub">發一崇德・仙佛聖訓</div>
+        </div>
+      </div>
+      <div class="hdr-date" id="hdrDate"></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab on" onclick="go('home',this)" aria-label="首頁"><i class="ti ti-home"></i>首頁</button>
+    <button class="tab" onclick="go('lib',this)" aria-label="典籍"><i class="ti ti-books"></i>典籍</button>
+    <button class="tab" onclick="go('lot',this)" aria-label="抽籤"><i class="ti ti-sparkles"></i>抽籤</button>
+    <button class="tab" onclick="go('srch',this)" aria-label="搜尋"><i class="ti ti-search"></i>搜尋</button>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- INSTALL BANNER -->
+    <div class="install-banner" id="installBanner">
+      <div class="install-text">📱 加入主畫面<br>像 App 一樣使用</div>
+      <button class="install-btn" id="installBtn">安裝</button>
+    </div>
+
+    <!-- ===== HOME ===== -->
+    <div class="scr on" id="s-home">
+
+      <div class="lbl">✨ 今日仙佛聖訓</div>
+      <div class="daily-banner" id="dailyCard">
+        <!-- filled by JS -->
+      </div>
+
+      <div class="lbl">🌐 跨典籍主題探索</div>
+      <div class="theme-card" onclick="sendPrompt('請從一貫道仙佛聖訓、佛教、基督教、儒家和道家五個傳統，各引用一段關於「心靈平靜」的經典，並加以比較分析，提供三層解析')">
+        <div class="theme-title">💡 本週主題：心靈平靜</div>
+        <div class="theme-desc">不同傳統如何教導我們找到內心的平靜？從仙佛訓文到東西方經典 ↗</div>
+        <div class="tag-row">
+          <span class="bdg b-yi" style="margin:0">一貫道</span>
+          <span class="bdg b-bd" style="margin:0">佛教</span>
+          <span class="bdg b-bi" style="margin:0">基督教</span>
+          <span class="bdg b-cf" style="margin:0">儒家</span>
+          <span class="bdg b-tao" style="margin:0">道家</span>
+        </div>
+      </div>
+
+      <div class="lbl">📚 近期收藏</div>
+      <div id="savedList">
+        <div class="vi" onclick="openDet('yi_qianying')">
+          <div class="vq">「道在平常日用中，莫向他方別處尋。」</div>
+          <div class="vm"><i class="ti ti-bookmark-filled" style="color:var(--purple-light);font-size:13px"></i>仙佛訓文・活佛師尊 · 三層解析 ↗</div>
+        </div>
+        <div class="vi" onclick="openDet('lunyu')">
+          <div class="vq">「學而時習之，不亦說乎？」</div>
+          <div class="vm"><i class="ti ti-bookmark-filled" style="color:var(--purple-light);font-size:13px"></i>論語・學而篇 · 三層解析 ↗</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== LIBRARY ===== -->
+    <div class="scr" id="s-lib">
+      <div class="lbl">選擇典籍傳統</div>
+      <div class="tgrid">
+        <div class="tc sel" onclick="selTrad(this,'yi')"><div class="ti2">🏮</div><div class="tn">一貫道</div><div class="ts2">仙佛聖訓・崇德</div></div>
+        <div class="tc" onclick="selTrad(this,'cf')"><div class="ti2">📜</div><div class="tn">儒家</div><div class="ts2">四書五經・論語孟子</div></div>
+        <div class="tc" onclick="selTrad(this,'tao')"><div class="ti2">☯️</div><div class="tn">道家</div><div class="ts2">道德經・莊子</div></div>
+        <div class="tc" onclick="selTrad(this,'bd')"><div class="ti2">🪷</div><div class="tn">佛教</div><div class="ts2">金剛經・心經</div></div>
+        <div class="tc" onclick="selTrad(this,'bi')"><div class="ti2">✝️</div><div class="tn">基督教</div><div class="ts2">新約・舊約・詩篇</div></div>
+        <div class="tc" onclick="selTrad(this,'more')"><div class="ti2">📚</div><div class="tn">更多</div><div class="ts2">即將收錄</div></div>
+      </div>
+      <div class="lbl" id="libLabel">一貫道仙佛聖訓 — 發一崇德</div>
+      <div id="verseList"></div>
+    </div>
+
+    <!-- ===== LOT ===== -->
+    <div class="scr" id="s-lot">
+      <div class="lot-hero">
+        <div class="lot-title">🎋 智慧抽籤</div>
+        <div class="lot-sub">心中默想您的問題或心事<br>誠心搖籤，讓千年智慧為您指引</div>
+        <button class="shake-btn" id="shakeBtn" onclick="shakeIt()">🀄 搖籤求示</button>
+      </div>
+
+      <div class="lot-result" id="lotResult">
+        <div class="lot-num" id="lotNum"></div>
+        <div class="lot-quote" id="lotQuote"></div>
+        <div class="lot-src" id="lotSrc"></div>
+        <div class="lot-interp" id="lotInterp"></div>
+        <div class="arow" style="margin-top:12px">
+          <button class="btn btn-p" id="lotAnalyzeBtn"><i class="ti ti-layers-intersect"></i>三層解析</button>
+          <button class="btn" onclick="shakeIt()"><i class="ti ti-refresh"></i>再抽一籤</button>
+          <button class="btn" onclick="saveLot()"><i class="ti ti-bookmark"></i>收藏</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="lbl" style="margin-bottom:6px">📖 籤詩來源</div>
+        <div style="font-size:12px;color:var(--text-secondary);line-height:1.7">整合發一崇德仙佛聖訓、易經卦辭、佛教偈頌、儒家箴言四大系統，每籤均附出處與三層解析。</div>
+        <a class="src-tag" href="https://www.fycdepaper.com/32854353473214720856" target="_blank" style="margin-top:8px;display:inline-flex"><i class="ti ti-external-link" style="font-size:12px"></i>發一崇德電子報</a>
+      </div>
+    </div>
+
+    <!-- ===== SEARCH ===== -->
+    <div class="scr" id="s-srch">
+      <div class="sb">
+        <i class="ti ti-search" style="color:var(--text-tertiary);font-size:17px"></i>
+        <input type="text" id="searchInput" placeholder="搜尋經典或輸入您的問題…">
+        <button onclick="doSearch()" style="border:none;background:none;color:var(--purple-mid);cursor:pointer;font-size:13px;padding:0 2px;font-family:var(--sans)">搜尋</button>
+      </div>
+      <div class="frow">
+        <div class="chip on" onclick="fc(this,'all')">全部</div>
+        <div class="chip" onclick="fc(this,'yi')">一貫道</div>
+        <div class="chip" onclick="fc(this,'cf')">儒家</div>
+        <div class="chip" onclick="fc(this,'tao')">道家</div>
+        <div class="chip" onclick="fc(this,'bd')">佛教</div>
+        <div class="chip" onclick="fc(this,'bi')">基督教</div>
+      </div>
+      <div class="lbl">💡 熱門主題</div>
+      <div class="vi" onclick="sendPrompt('請從一貫道仙佛聖訓（發一崇德）、佛教、儒家、道家、基督教五個傳統，各引用一段關於「慈悲與愛」的經典，並提供三層解析（字義、現代應用、跨典籍共鳴）')">
+        <div class="vq" style="font-size:13px">慈悲與愛</div>
+        <div class="vm">跨典籍主題 · 五大傳統 ↗</div>
+      </div>
+      <div class="vi" onclick="sendPrompt('請從一貫道仙佛聖訓（發一崇德）、佛教、基督教、儒家的角度，各提供一段關於「面對困境與挫折」的智慧，並加以三層解析')">
+        <div class="vq" style="font-size:13px">面對困境的智慧</div>
+        <div class="vm">跨典籍主題 · 四大傳統 ↗</div>
+      </div>
+      <div class="vi" onclick="sendPrompt('一貫道「道在平常日用中」的修行觀，與佛教「平常心是道」、基督教「神的國在你心裡」有什麼相通之處？請做深度比較並提供三層解析')">
+        <div class="vq" style="font-size:13px">修行就在日常生活中</div>
+        <div class="vm">跨典籍主題 · 跨傳統 ↗</div>
+      </div>
+      <div class="vi" onclick="sendPrompt('從一貫道「萬教同源」的角度，各宗教對「死亡與來世」有什麼不同的詮釋？請引用各典籍原文並加以分析')">
+        <div class="vq" style="font-size:13px">死亡與來世的詮釋</div>
+        <div class="vm">跨典籍主題 · 比較宗教學 ↗</div>
+      </div>
+      <button class="full-btn" onclick="doSearch()"><i class="ti ti-sparkles"></i>AI 智慧搜尋</button>
+    </div>
+
+    <!-- ===== DETAIL ===== -->
+    <div class="scr" id="s-det">
+      <button class="back-btn" onclick="goBack()"><i class="ti ti-arrow-left"></i>返回</button>
+      <div id="detBadge"></div>
+      <div class="dqb"><p id="detQ"></p><span id="detS"></span></div>
+
+      <div class="lbl">字義拆解</div>
+      <div class="crow" id="detChars"></div>
+
+      <div class="divider"></div>
+      <div class="lbl">三層現代應用</div>
+      <div id="detLayers"></div>
+
+      <div class="divider"></div>
+      <div class="lbl">跨典籍共鳴</div>
+      <div id="detCross"></div>
+
+      <div class="divider"></div>
+      <div id="detSrcLink"></div>
+      <button class="full-btn" id="detAiBtn" style="margin-top:6px"><i class="ti ti-message-2"></i>深入 AI 對話</button>
+      <button class="full-btn" onclick="saveDet()" style="background:none;border-color:var(--border);color:var(--text-secondary)"><i class="ti ti-bookmark"></i>收藏此段</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA =====
+// ===== SUPABASE 設定 =====
+// ★ 填入你的 Supabase 設定（在 Supabase → Settings → API 找）
+const SB_URL = 'https://abcdefghij.supabase.co';   // 例如 https://abcdefg.supabase.co
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2bmZ3Z3pubmd1a3JrcmFvbGhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1ODkwMjksImV4cCI6MjA5NzE2NTAyOX0.1vbMJv9DKYxru5omBwq2FHPEMf08jtLzb-LnmvtPfK0';       // eyJ 開頭那串
+
+// 從 Supabase 讀取資料的共用函式
+async function sbFetch(table, params = '') {
+  const res = await fetch(`${SB_URL}/rest/v1/${table}?${params}`, {
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + SB_KEY,
+      'Content-Type': 'application/json'
+    }
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+// ===== 動態資料（從 Supabase 載入，取代寫死的陣列）=====
+let TEACHINGS = {};
+let VERSES_BY_TRAD = { yi:[], cf:[], tao:[], bi:[], bd:[], more:[] };
+let LOTS = [];
+let DAILY = [];
+
+// 把 Supabase 資料格式轉換成 App 原本格式
+function convertTeaching(row) {
+  const tradMap = { yi:'b-yi', confucius:'b-cf', tao:'b-tao', buddha:'b-bd', christian:'b-bi', islam:'b-is' };
+  const badgeMap = { yi:'🏮 一貫道', confucius:'📜 儒家', tao:'☯️ 道家', buddha:'🪷 佛教', christian:'✝️ 基督教', islam:'☪️ 伊斯蘭' };
+  return {
+    src: row.tradition_code,
+    badge: tradMap[row.tradition_code] || 'b-yi',
+    badgeTxt: badgeMap[row.tradition_code] || '🏮 一貫道',
+    q: row.quote,
+    s: row.quote_source,
+    url: row.source_url || '',
+    chars: row.char_breakdown || [],
+    layers: [],   // 之後可從資料庫擴充
+    cross: row.meaning_cross || [],
+    ai: row.ai_prompt || `請為這段經典提供三層解析：字義拆解、現代應用與跨典籍共鳴：${row.quote}`
+  };
+}
+
+// 啟動時從 Supabase 載入所有資料
+async function loadAllData() {
+  try {
+    // 載入訓文
+    const teachings = await sbFetch('teachings', 'select=*&order=id');
+    teachings.forEach(row => {
+      const key = `${row.tradition_code}_${row.id}`;
+      TEACHINGS[key] = convertTeaching(row);
+      // 加入各傳統清單
+      const tradKey = row.tradition_code === 'confucius' ? 'cf'
+        : row.tradition_code === 'buddha' ? 'bd'
+        : row.tradition_code === 'christian' ? 'bi'
+        : row.tradition_code;
+      if (VERSES_BY_TRAD[tradKey]) VERSES_BY_TRAD[tradKey].push(key);
+      // 每日推薦
+      if (row.is_daily) DAILY.push(TEACHINGS[key]);
+    });
+
+    // 載入抽籤
+    const lots = await sbFetch('lots', 'select=*,teachings(quote,quote_source,tradition_code,ai_prompt)&order=sort_order');
+    LOTS = lots.map(row => ({
+      n: row.lot_number,
+      q: `「${row.teachings.quote}」`,
+      s: row.teachings.quote_source,
+      i: row.interpretation,
+      key: `${row.teachings.tradition_code}_${row.teaching_id}`
+    }));
+
+    return true;
+  } catch(e) {
+    console.error('資料載入失敗：', e);
+    return false;
+  }
+}
+
+// ===== 原本寫死的資料（保留作備用，Supabase 載入失敗時使用）=====
+const TEACHINGS_FALLBACK = {
+  yi_zhenxin:{
+    src:'yi', badge:'b-yi', badgeTxt:'🏮 一貫道',
+    q:'「進步的功夫不是在外表，而是應該在內德心性上下功夫，修道人要常常反省自我，脾氣改了多少？驕傲的心是否去除？嫉妒的心是否刪除？君子修道要越修越謙恭，那麼你的心性才會越圓滿。」',
+    s:'觀音菩薩慈訓【進步的功夫】・發一崇德電子報',
+    url:'https://www.fycdepaper.com/32854353473214720856/5640815',
+    chars:[{z:'內德',p:'nèi dé',m:'內在品德修養——看不見的心性，比外在行為更根本'},{z:'謙恭',p:'qiān gōng',m:'謙遜恭敬——越有德行，越能看見自己的不足'},{z:'圓滿',p:'yuán mǎn',m:'心性完整無缺——道的最高境界，佛家稱為「覺悟」'}],
+    layers:[
+      {bg:'#EEEDFE',ic:'ti-brain',c:'#534AB7',t:'自我成長：反省是進步的鑰匙',d:'觀音菩薩提醒我們，真正的進步看不見——是脾氣少了一點，是驕傲淡了一分。現代心理學同樣指出，自我覺察能力是情緒智商最核心的要素。',tip:'每晚睡前問自己：今天我的脾氣有沒有少發一次？'},
+      {bg:'#E1F5EE',ic:'ti-user-check',c:'#0F6E56',t:'人際關係：謙恭才能真正溝通',d:'「越修越謙恭」——越有修為的人，越能放下自己，真正聆聽他人。研究顯示，謙遜是所有領導力中最被低估卻最有效的特質。',tip:'今天遇到不同意見時，先說「我來理解你的角度」，而不是立刻反駁。'},
+      {bg:'#FAEEDA',ic:'ti-heart',c:'#854F0B',t:'日常修行：心性的雕刻是一輩子的事',d:'心性修煉不是一蹴而就，而是日積月累的工程。仙佛慈示「要越修越謙恭」，說明方向正確的修行不會讓人自滿，而是讓人越來越謙遜。',tip:'把日常中讓你動氣的事，都當成「修煉題」，看看自己能不能越來越快地回到平靜。'}
+    ],
+    cross:[
+      {s:'📜 儒家・論語',q:'「吾日三省吾身——為人謀而不忠乎？與朋友交而不信乎？傳不習乎？」',l:'呼應「常常反省自我」——孔子每日三問，正是心性修煉的儒家版本'},
+      {s:'🪷 佛教・六祖壇經',q:'「若真修道人，不見世間過。」',l:'呼應「嫉妒的心是否刪除」——真修行者看向內而非評判外'},
+      {s:'✝️ 聖經・馬太福音 7:3',q:'「為何看見你弟兄眼中有刺，卻不想自己眼中有梁木呢？」',l:'呼應「反省自我」——基督教同樣教導先正自身，再論他人'}
+    ],
+    ai:'觀音菩薩慈訓「進步的功夫在內德心性」，請從一貫道、儒家、佛教三個角度深度解析「內德修養」的具體方法，並說明如何在現代生活中每天實踐'
+  },
+  yi_jiejin:{
+    src:'yi', badge:'b-yi', badgeTxt:'🏮 一貫道',
+    q:'「帶動同修齊步走，理念一致無隔閡。遵前提後佛規守，定下方針齊勉修。修辦之路有困阻，堅定心志渡挫折。受考受磨更提振，借事煉心修成佛。世事考驗思考者，不枉修行智慧得。」',
+    s:'月慧菩薩慈訓【遵前提後 借事煉心】・發一崇德電子報・2020年7月26日 田中道濟禪院',
+    url:'https://www.fycdepaper.com/32854353473214720856/9407608',
+    chars:[{z:'借事',p:'jiè shì',m:'借助外在發生的事——把遭遇當作修煉的材料，而非阻礙'},{z:'煉心',p:'liàn xīn',m:'鍛鍊心性——如煉金般去除雜質，留下純淨的本性'},{z:'提振',p:'tí zhèn',m:'藉由磨難振奮——考驗不是懲罰，而是讓人變得更強'}],
+    layers:[
+      {bg:'#EEEDFE',ic:'ti-flame',c:'#534AB7',t:'逆境觀：苦難是修行的材料',d:'「受考受磨更提振，借事煉心修成佛」——月慧菩薩點出最深的修道智慧：困難不是來阻擋我們，而是來磨練我們。現代心理學稱此為「創傷後成長（PTG）」。',tip:'下次遇到困難，問自己：「這件事要教我什麼？」而不是「我為什麼這麼倒霉？」'},
+      {bg:'#E1F5EE',ic:'ti-users',c:'#0F6E56',t:'團體修行：同修相互扶持',d:'「帶動同修齊步走，理念一致無隔閡」——修道不是孤獨的個人旅程，而是在社群中相互成長。研究顯示，有信仰社群支持的人，面對挫折的韌性顯著更高。',tip:'找到一個共同修行的夥伴，彼此提醒，在對方低潮時給予支持。'},
+      {bg:'#FAEEDA',ic:'ti-trophy',c:'#854F0B',t:'長程視角：修行是一生的功課',d:'「世事考驗思考者，不枉修行智慧得」——有修行的人，能從每件世事中提取智慧。這種能力不是天生的，而是長期修煉出來的。',tip:'開始寫「智慧日記」：每天記下一件讓你學到東西的事，無論大小。'}
+    ],
+    cross:[
+      {s:'📜 儒家・孟子',q:'「天將降大任於斯人也，必先苦其心志，勞其筋骨，餓其體膚，空乏其身。」',l:'呼應「受考受磨更提振」——儒家早已指出磨難是天賦大任前的必經之路'},
+      {s:'🪷 佛教・金剛經',q:'「一切賢聖，皆以無為法，而有差別。」',l:'呼應「借事煉心」——萬法皆是修行的材料，差別在於心如何回應'},
+      {s:'✝️ 聖經・羅馬書 5:3-4',q:'「患難生忍耐，忍耐生老練，老練生盼望。」',l:'呼應「受考受磨更提振」——基督教同樣視苦難為靈性成長的催化劑'}
+    ],
+    ai:'月慧菩薩「借事煉心」的概念，與現代心理學的「成長型思維（Growth Mindset）」有何深層共鳴？請從一貫道、儒家、佛教三個角度解析如何在現代職場和家庭中實踐「借事煉心」'
+  },
+  yi_daojiao:{
+    src:'yi', badge:'b-yi', badgeTxt:'🏮 一貫道',
+    q:'「道傳世界救性命，教化眾生歸善奉。道為本體心法入，教為作用淨人心。道可超生了解脫，教可來世福報存。道乃萬靈真主宰，教乃精神寄託引。」',
+    s:'活佛師尊慈訓【道與教的分析】・崇德學院仙佛聖訓・發一天元長聖道場',
+    url:'https://www.iktcds.edu.tw/Chong-De-School/Buddha-Teachings-all-01.htm',
+    chars:[{z:'道',p:'dào',m:'宇宙運行的根本真理——一貫道的核心，超越所有宗教形式的本體'},{z:'教',p:'jiào',m:'宗教的外在形式——各宗教的儀式、戒律、教義，是引導人心的工具'},{z:'超生',p:'chāo shēng',m:'超越生死輪迴——得道者能了脫生死，是修道最終極的目標'}],
+    layers:[
+      {bg:'#EEEDFE',ic:'ti-world',c:'#534AB7',t:'宗教觀：道是本體，教是工具',d:'活佛師尊以精妙的對比說明：「道」是永恆的真理，「教」是讓人接近真理的方法。不同宗教如同不同的路，道路不同，但終點一致。這正是一貫道「萬教同源」最核心的哲學。',tip:'練習欣賞與你信仰不同的人如何透過他們的方式接近真善美，找到共同的本質。'},
+      {bg:'#E1F5EE',ic:'ti-compass',c:'#0F6E56',t:'修行路徑：從「教」入手，往「道」前進',d:'「道為本體心法入，教為作用淨人心」——一貫道教導我們，宗教儀式和規範（教）是入門工具，但最終要超越形式，直接體驗道的本質（心法）。',tip:'觀察自己的修行：有多少是「形式」（按時打坐、誦經），有多少是「真正的心性轉化」？'},
+      {bg:'#FAEEDA',ic:'ti-infinity',c:'#854F0B',t:'終極目標：超生了脫',d:'「道可超生了解脫」——一貫道的最終目標是幫助人超越生死的束縛。這與佛教的涅槃、基督教的永生、道家的得道成仙，在精神層面有深刻的呼應。',tip:'思考：你修行的終極目標是什麼？是心靈平靜、幫助他人，還是超越生死？把它寫下來。'}
+    ],
+    cross:[
+      {s:'☯️ 道德經・第一章',q:'「道可道，非常道；名可名，非常名。」',l:'呼應「道為本體」——老子同樣指出真正的道超越語言和概念'},
+      {s:'🪷 佛教・六祖壇經',q:'「佛法在世間，不離世間覺；離世覓菩提，恰如求兔角。」',l:'呼應「教為作用」——佛教也指出覺悟不在宗教形式，在日常生活中'},
+      {s:'✝️ 聖經・約翰福音 4:24',q:'「神是個靈，所以拜他的必須用心靈和誠實拜他。」',l:'呼應「道為本體心法入」——基督教同樣強調真正的敬拜是心靈的，而非儀式的'}
+    ],
+    ai:'活佛師尊「道為本體，教為作用」的哲學，與現代比較宗教學的「宗教多元主義（Religious Pluralism）」有何異同？請從學術和修行兩個角度深度分析'
+  },
+  yi_qianying:{
+    src:'yi', badge:'b-yi', badgeTxt:'🏮 一貫道',
+    q:'「道在平常日用中，莫向他方別處尋。」',
+    s:'仙佛訓文・活佛師尊 彌勒古佛',
+    url:'https://www.fycdepaper.com/32854353473214720856.html',
+    chars:[{z:'道',p:'dào',m:'天地運行的根本真理，也是修行的核心目標'},{z:'平常',p:'píngcháng',m:'日常生活——吃飯、工作、待人，皆是道場'},{z:'尋',p:'xún',m:'向外追求——提醒莫捨近求遠，道就在眼前'}],
+    layers:[
+      {bg:'#EEEDFE',ic:'ti-home',c:'#534AB7',t:'修行：生活即道場',d:'仙佛訓示點出最深的智慧：道不在廟堂，不在遠方，而在每一個當下的起心動念與待人接物中。禪宗「平常心是道」同樣指向這個真理。',tip:'今天做家事、工作時，保持覺察——問自己「此刻我的起心動念是什麼？」'},
+      {bg:'#E1F5EE',ic:'ti-eye',c:'#0F6E56',t:'心理：當下即是',d:'現代正念（Mindfulness）研究顯示，將注意力放在當下，能顯著降低焦慮、提升幸福感。這與「道在平常日用中」完全吻合。',tip:'設定每小時一次的提醒，問自己「我現在在做什麼？我的心在哪裡？」'},
+      {bg:'#FAEEDA',ic:'ti-compass',c:'#854F0B',t:'人生觀：不捨近求遠',d:'許多人以為幸福在更好的工作、更遠的旅行之後。仙佛提醒我們，當下的平靜與感恩，才是真正的道。',tip:'寫下今天三件「平常」卻讓你感恩的事，發現「道」就在其中。'}
+    ],
+    cross:[
+      {s:'📜 儒家・大學',q:'「格物、致知、誠意、正心、修身——從日用開始。」',l:'呼應「平常日用」——儒家修身同樣從最基本的日常行為做起'},
+      {s:'🪷 佛教・六祖壇經',q:'「佛法在世間，不離世間覺。」',l:'呼應「莫向他方別處尋」——覺悟不在彼岸，就在世間生活中'},
+      {s:'✝️ 聖經・路加福音 17:21',q:'「神的國就在你們心裡。」',l:'呼應道在內心——真理不需外求，就在自身之內'}
+    ],
+    ai:'請從一貫道「道在平常日用中」的角度，說明如何將修道融入現代繁忙的生活，並比較儒家、佛教、基督教對「生活即修行」的看法'
+  },
+  lunyu:{
+    src:'cf', badge:'b-cf', badgeTxt:'📜 論語',
+    q:'「學而時習之，不亦說乎？有朋自遠方來，不亦樂乎？人不知而不慍，不亦君子乎？」',
+    s:'《論語》〈學而〉第一章 · 孔子',
+    chars:[{z:'學',p:'xué',m:'主動求知，觀察、實踐、反思，不限書本'},{z:'習',p:'xí',m:'小鳥反覆練飛（象形）——反覆操練，不只讀懂'},{z:'說',p:'yuè',m:'通「悅」，內心深處真實的喜悅'}],
+    layers:[
+      {bg:'#FBEAF0',ic:'ti-brain',c:'#72243E',t:'個人成長：刻意練習的科學根基',d:'「時習」與現代間隔重複學習法高度吻合——定期複習，記憶留存率可提升數倍。孔子在兩千五百年前已掌握這個原理。',tip:'學新技能後，第1天、第3天、第7天各複習一次，感受「悅」的累積。'},
+      {bg:'#E1F5EE',ic:'ti-users',c:'#0F6E56',t:'人際：共學比獨學更快樂',d:'「有朋自遠方來」點出志同道合者切磋的喜悅。研究顯示，學習社群能讓人維持更長久的動機。',tip:'加入讀書會或找學習夥伴，讓知識在交流中活起來。'},
+      {bg:'#FAEEDA',ic:'ti-heart',c:'#854F0B',t:'心理：不慍的內在自由',d:'「人不知而不慍」——學習不求他人認可，與心理學「內在動機」理論一致：為自己而學才是最持久的動力。',tip:'問自己「我學這個是為了稱讚，還是真的喜歡？」找回學習的純粹喜悅。'}
+    ],
+    cross:[
+      {s:'🏮 一貫道・仙佛訓文',q:'「修道不在於多知，在於躬行實踐。」',l:'呼應「習」——知道還不夠，要真正身體力行'},
+      {s:'🪷 佛教・八正道',q:'「正精進」——持續不懈地修習正確的法門',l:'呼應「時習之」——修行需要持恆，而非一時衝動'},
+      {s:'✝️ 聖經・腓立比書 4:11',q:'「我學會了，無論在什麼狀態都可以知足。」',l:'呼應「不慍」——真正的平靜來自內心，不依賴外在認可'}
+    ],
+    ai:'請從一貫道仙佛訓文與各宗教智慧的角度，為論語學而篇做更深度的解析，並告訴我如何在現代生活中每天實踐「時習」'
+  },
+  daode:{
+    src:'tao', badge:'b-tao', badgeTxt:'☯️ 道德經',
+    q:'「道可道，非常道；名可名，非常名。無名天地之始；有名萬物之母。」',
+    s:'《道德經》第一章 · 老子',
+    chars:[{z:'道',p:'dào',m:'宇宙運行的根本法則，無形無象，卻無所不在'},{z:'常',p:'cháng',m:'永恆不變——「非常道」即超越語言能描述的範疇'},{z:'名',p:'míng',m:'語言、概念、標籤——萬物皆因命名而被認識'}],
+    layers:[
+      {bg:'#FAEEDA',ic:'ti-infinity',c:'#854F0B',t:'思維：放下對定義的執著',d:'現代量子物理指出，真實存在超越語言所能描述的範疇。老子在兩千五百年前已點出同樣的智慧——真正的真理是超越語言的。',tip:'當你覺得某件事「就是如此」時，試著問：「還有什麼可能是我沒看到的？」'},
+      {bg:'#EEEDFE',ic:'ti-eye',c:'#534AB7',t:'工作：直覺與分析並用',d:'最好的決策往往結合了數據分析（名）與直覺感受（無名）。老子提醒我們不要只靠語言和邏輯，更要聆聽內心的感知。',tip:'做重大決定前，先整理數據，再靜心感受自己的直覺，兩者缺一不可。'},
+      {bg:'#E1F5EE',ic:'ti-plant',c:'#0F6E56',t:'生活：順應自然節奏',d:'宇宙在沒有人類命名之前就已運作完美。我們常常過度規劃，卻忘了萬物有其自然秩序。',tip:'每天留出15分鐘不看手機、不做計畫，只是「存在」，體驗「無名」的狀態。'}
+    ],
+    cross:[
+      {s:'🏮 一貫道・訓文',q:'「無極而太極，道生一，一生二，二生三，三生萬物。」',l:'呼應「無名天地之始」——道是萬物創生的根源'},
+      {s:'✝️ 聖經・約翰福音 1:1',q:'「太初有道，道與神同在，道就是神。」',l:'呼應「道」——聖經中的「道（Logos）」同樣是宇宙的根本原理'},
+      {s:'🪷 佛教・心經',q:'「色即是空，空即是色。」',l:'呼應「道可道，非常道」——實相超越語言與概念'}
+    ],
+    ai:'請深入比較老子道德經第一章與聖經約翰福音中「道（Logos）」的異同，以及一貫道如何整合這兩個哲學概念'
+  },
+  john316:{
+    src:'bi', badge:'b-bi', badgeTxt:'✝️ 聖經',
+    q:'「神愛世人，甚至將他的獨生子賜給他們，叫一切信他的，不至滅亡，反得永生。」',
+    s:'聖經・約翰福音 3:16',
+    chars:[{z:'愛',p:'Agape',m:'希臘文——無條件的、犧牲性的愛，不求回報'},{z:'賜',p:'dídōmi',m:'主動給予——不是交換，是白白恩賜'},{z:'信',p:'pisteuō',m:'信靠、委身——不只頭腦認同，而是全人托付'}],
+    layers:[
+      {bg:'#E6F1FB',ic:'ti-heart',c:'#0C447C',t:'愛的本質：主動給予而不計回報',d:'這節經文定義了最高標準的「愛」——不是感情，而是行動。現代心理學的「利他行為」研究顯示，無條件付出能帶來更深的幸福感。',tip:'今天選一件事，為他人做而不期待任何回報，感受 Agape 之愛的重量。'},
+      {bg:'#EEEDFE',ic:'ti-infinity',c:'#534AB7',t:'生命觀：超越死亡的盼望',d:'「不至滅亡，反得永生」帶給人面對無常時的穩定感。這種盼望是人類精神需求的核心，各傳統都以不同方式回答。',tip:'如果你相信此刻有永恆的意義，今天你會如何不同地對待身邊的人？'},
+      {bg:'#E1F5EE',ic:'ti-users',c:'#0F6E56',t:'普世：愛的邊界沒有界限',d:'「神愛世人」——不是某個民族，是全人類。這種普世之愛與一貫道天下一家、佛教慈悲、儒家仁愛的精神遙相呼應。',tip:'遇到與你不同信仰的人，試著找到你們共同相信的一件事。'}
+    ],
+    cross:[
+      {s:'🏮 一貫道・道義',q:'「天下一家，共證菩提；萬教同源，普渡眾生。」',l:'呼應「神愛世人」——超越宗教藩籬的普世救度'},
+      {s:'🪷 佛教・無量壽經',q:'「普為諸眾生，悉令得解脫。」',l:'呼應「不至滅亡」——佛陀誓願引領一切眾生解脫苦難'},
+      {s:'📜 儒家・禮運大同篇',q:'「大道之行也，天下為公。」',l:'呼應普世之愛——儒家大同世界同樣追求超越私利的博愛'}
+    ],
+    ai:'請比較約翰福音3:16的基督教「神愛（Agape）」與佛教慈悲（Metta）、儒家仁愛、一貫道普渡的異同，從一貫道萬教同源的角度加以整合'
+  },
+  xinjing:{
+    src:'bd', badge:'b-bd', badgeTxt:'🪷 佛教',
+    q:'「色即是空，空即是色；受想行識，亦復如是。」',
+    s:'般若波羅蜜多心經',
+    chars:[{z:'色',p:'sè',m:'一切有形的物質現象——肉體、物品、可見的一切'},{z:'空',p:'kōng',m:'無固定自性——萬物沒有永恆不變的本質，隨因緣生滅'},{z:'識',p:'shí',m:'意識、認知——對外境的感知和判斷，同樣無常'}],
+    layers:[
+      {bg:'#EAF3DE',ic:'ti-eye',c:'#27500A',t:'認知：放下對「真實」的執著',d:'「色即是空」並非說世界不存在，而是說世界的本質是流動的、無常的。這與現代物理學發現物質其實是能量的振動高度呼應。',tip:'今天看到讓你煩惱的事，問自己：「十年後，這件事還重要嗎？」感受「空」的智慧。'},
+      {bg:'#EEEDFE',ic:'ti-infinity',c:'#534AB7',t:'情緒：苦來自「執著」不是來自事件',d:'「受想行識，亦復如是」——我們的感受、思維、行動和意識都是無常的。痛苦往往來自執著這些「本空」之物，以為它們是永恆固定的。',tip:'下次情緒來時，觀察它而非被它淹沒——「我注意到憤怒升起了」比「我很憤怒」更有智慧。'},
+      {bg:'#FAEEDA',ic:'ti-flame',c:'#854F0B',t:'生死觀：無常才能帶來真正的感恩',d:'正因為萬物無常（空），每一刻才更珍貴。日本的「物哀」（mono no aware）和禪的「一期一會」都源自這個智慧——因為會消逝，所以珍貴。',tip:'今天選一個你平時視為理所當然的人或事，用「這可能是最後一次」的心情去珍惜它。'}
+    ],
+    cross:[
+      {s:'🏮 一貫道・訓文',q:'「萬法皆空，唯道是真。」',l:'呼應「色即是空」——一貫道同樣指向超越形相的道體'},
+      {s:'☯️ 道德經・第十六章',q:'「萬物並作，吾以觀復。夫物芸芸，各復歸其根。」',l:'呼應「空」——老子觀察萬物終究回歸本源，與空性的智慧相通'},
+      {s:'✝️ 聖經・傳道書 1:2',q:'「虛空的虛空，凡事都是虛空。」',l:'呼應「色即是空」——傳道書同樣指出世間萬物的無常本質'}
+    ],
+    ai:'佛教心經「色即是空」的哲學，與現代量子物理學的發現有何深層呼應？請從一貫道萬教同源的角度，說明佛、道、儒、基督教如何以不同語言描述同一個「無常」的智慧'
+  }
+};
+
+const VERSES_BY_TRAD_FALLBACK = {
+  yi:['yi_zhenxin','yi_jiejin','yi_daojiao','yi_qianying'],
+  cf:['lunyu'],
+  tao:['daode'],
+  bi:['john316'],
+  bd:['xinjing'],
+  more:[]
+};
+
+// LOTS 和 DAILY 已在上方改為從 Supabase 動態載入
+// 備用抽籤資料（Supabase 失敗時使用）
+const LOTS_FALLBACK = [
+  {n:'第 一 籤',q:'「道在平常日用中，莫向他方別處尋。」',s:'仙佛訓文・活佛師尊',i:'此籤示意：道就在你現在所處的日常中。不必尋找特別的機緣，就從此刻起，用誠敬的心對待身邊每一個人和每一件事。',key:'yi_qianying'},
+  {n:'第 七 籤',q:'「受考受磨更提振，借事煉心修成佛。」',s:'月慧菩薩慈訓・發一崇德',i:'此籤示意：當下遭遇的考驗，正是修煉心性的好機會。不要逃避，要把每一件困難的事都當作磨礪心志的材料。',key:'yi_jiejin'},
+  {n:'第 十五 籤',q:'「學而時習之，不亦說乎？」',s:'論語・學而篇・孔子',i:'此籤示意：當下宜把握學習的機會，持續溫習所學，在知識的反覆實踐中找到真正的喜悅。',key:'lunyu'},
+  {n:'第 廿三 籤',q:'「進步的功夫不是在外表，而是應該在內德心性上下功夫。」',s:'觀音菩薩慈訓・發一崇德',i:'此籤示意：停下來看看自己的內心。脾氣改了嗎？驕傲少了嗎？真正的進步在心性，不在外在的成就。',key:'yi_zhenxin'},
+  {n:'第 卅一 籤',q:'「色即是空，空即是色。」',s:'般若波羅蜜多心經',i:'此籤示意：放下執著。你所煩惱的事物，其本質是無常的，不必過度緊握。放鬆心，隨順因緣，自有轉機。',key:'xinjing'},
+  {n:'第 四十 籤',q:'「神愛世人，甚至將他的獨生子賜給他們。」',s:'聖經・約翰福音 3:16',i:'此籤示意：你是被愛的。在你感到孤單或被遺棄的時刻，記得宇宙有更大的愛在守護著你，安心前行。',key:'john316'},
+  {n:'第 五十 籤',q:'「道為本體心法入，教為作用淨人心。」',s:'活佛師尊慈訓・崇德學院',i:'此籤示意：回到根本。無論你信奉什麼，都要回到最核心的問題：你的心清淨了嗎？你的行動是發自真誠的嗎？',key:'yi_daojiao'},
+  {n:'第 五七 籤',q:'「道可道，非常道；名可名，非常名。」',s:'道德經・第一章・老子',i:'此籤示意：不要被別人的定義所框限。你現在的困惑，也許是因為用了別人的眼光在評判自己。試著放下標籤，感受真實的自己。',key:'daode'}
+];
+
+// ===== STATE =====
+let prevTab = 'home';
+let prevTabEl = null;
+let currentTrad = 'yi';
+let currentFilter = 'all';
+let saved = JSON.parse(localStorage.getItem('wisdom_saved')||'[]');
+let deferredPrompt = null;
+
+// ===== INIT =====
+window.addEventListener('load', async () => {
+  // 先從 Supabase 載入資料
+  const ok = await loadAllData();
+
+  // 如果 Supabase 失敗，使用備用資料
+  if (!ok || Object.keys(TEACHINGS).length === 0) {
+    console.warn('使用備用資料');
+    Object.assign(TEACHINGS, TEACHINGS_FALLBACK);
+    Object.assign(VERSES_BY_TRAD, VERSES_BY_TRAD_FALLBACK);
+    LOTS = LOTS_FALLBACK;
+    DAILY = [TEACHINGS.yi_zhenxin, TEACHINGS.yi_jiejin, TEACHINGS.yi_qianying, TEACHINGS.yi_daojiao];
+  }
+
+  initDate();
+  initDaily();
+  initVerseList('yi');
+  initSaved();
+  registerSW();
+});
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBanner').classList.add('show');
+});
+
+document.getElementById('installBtn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === 'accepted') showToast('✅ 正在安裝到主畫面…');
+  deferredPrompt = null;
+  document.getElementById('installBanner').classList.remove('show');
+});
+
+function initDate() {
+  const now = new Date();
+  const days = ['日','一','二','三','四','五','六'];
+  document.getElementById('hdrDate').innerHTML =
+    `${now.getMonth()+1}月${now.getDate()}日<br>星期${days[now.getDay()]}`;
+}
+
+function initDaily() {
+  const idx = new Date().getDate() % DAILY.length;
+  const d = DAILY[idx];
+  document.getElementById('dailyCard').innerHTML = `
+    <div class="daily-label">✨ 今日仙佛聖訓</div>
+    <span class="bdg ${d.badge}" style="margin-bottom:10px">${d.badgeTxt}</span>
+    <div class="daily-quote">${d.q}</div>
+    <div class="daily-src">${d.s}</div>
+    <div class="daily-meaning">點擊下方「三層解析」深入理解這段訓文的現代意涵與各宗教共鳴。</div>
+    <div class="arow" style="margin-top:12px">
+      <button class="btn" onclick="saveItem('${Object.keys(TEACHINGS).find(k=>TEACHINGS[k]===d)}')"><i class="ti ti-bookmark"></i>收藏</button>
+      <button class="btn btn-p" onclick="openDet('${Object.keys(TEACHINGS).find(k=>TEACHINGS[k]===d)}')"><i class="ti ti-layers-intersect"></i>三層解析</button>
+    </div>
+  `;
+}
+
+function initVerseList(trad) {
+  const keys = VERSES_BY_TRAD[trad] || [];
+  const titles = {yi:'一貫道仙佛聖訓 — 發一崇德',cf:'儒家 — 四書五經',tao:'道家 — 道德經',bd:'佛教 — 般若諸經',bi:'基督教 — 新舊約',more:'更多典籍 — 即將收錄'};
+  document.getElementById('libLabel').textContent = titles[trad]||'典籍';
+  if (!keys.length) {
+    document.getElementById('verseList').innerHTML = `<div class="card" style="text-align:center;color:var(--text-tertiary);font-size:13px">🚧 此典籍即將收錄，敬請期待</div>`;
+    return;
+  }
+  document.getElementById('verseList').innerHTML = keys.map(k => {
+    const t = TEACHINGS[k];
+    return `<div class="vi" onclick="openDet('${k}')">
+      <div class="vq">${t.q.length > 60 ? t.q.slice(0,60)+'…」' : t.q}</div>
+      <div class="vm"><i class="ti ti-file-text" style="font-size:13px"></i>${t.s.split('・')[0]} · 三層解析 ↗</div>
+    </div>`;
+  }).join('');
+}
+
+function initSaved() {
+  if (!saved.length) return;
+  const list = document.getElementById('savedList');
+  const extra = saved.map(k => {
+    const t = TEACHINGS[k];
+    if (!t) return '';
+    return `<div class="vi" onclick="openDet('${k}')">
+      <div class="vq">${t.q.length>60?t.q.slice(0,60)+'…」':t.q}</div>
+      <div class="vm"><i class="ti ti-bookmark-filled" style="color:var(--purple-light);font-size:13px"></i>${t.s.split('・')[0]} · 三層解析 ↗</div>
+    </div>`;
+  }).filter(Boolean);
+  if (extra.length) list.innerHTML = extra.join('') + list.innerHTML;
+}
+
+// ===== NAV =====
+function go(id, el) {
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  el.classList.add('on');
+  if (id!=='det') { prevTab=id; prevTabEl=el; }
+}
+
+function goBack() {
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('s-'+prevTab).classList.add('on');
+  if(prevTabEl) prevTabEl.classList.add('on');
+  else document.querySelector('.tab').classList.add('on');
+}
+
+// ===== DETAIL =====
+function openDet(key) {
+  const d = TEACHINGS[key];
+  if (!d) { sendPrompt('請為這段經典提供三層解析：字義拆解、現代應用與跨典籍共鳴'); return; }
+  document.getElementById('detBadge').innerHTML = `<span class="bdg ${d.badge}" style="margin-bottom:10px">${d.badgeTxt}</span>`;
+  document.getElementById('detQ').textContent = d.q;
+  document.getElementById('detS').textContent = d.s;
+  document.getElementById('detChars').innerHTML = d.chars.map(c=>
+    `<div class="cc"><div class="cz">${c.z}</div><div class="cp">${c.p}</div><div class="cm">${c.m}</div></div>`
+  ).join('');
+  document.getElementById('detLayers').innerHTML = d.layers.map(l=>
+    `<div class="lc"><div class="lic" style="background:${l.bg}"><i class="ti ${l.ic}" style="color:${l.c};font-size:18px"></i></div>
+    <div><div class="lt">${l.t}</div><div class="ld">${l.d}</div><div class="ltip">💡 ${l.tip}</div></div></div>`
+  ).join('');
+  document.getElementById('detCross').innerHTML = d.cross.map(x=>
+    `<div class="xc"><div class="xs">${x.s}</div><div class="xq">${x.q}</div><div class="xl">▸ ${x.l}</div></div>`
+  ).join('');
+  document.getElementById('detSrcLink').innerHTML = d.url ?
+    `<a class="src-tag" href="${d.url}" target="_blank"><i class="ti ti-external-link" style="font-size:12px"></i>查看原始來源</a>` : '';
+  document.getElementById('detAiBtn').onclick = ()=>sendPrompt(d.ai);
+  document.getElementById('detAiBtn').dataset.key = key;
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('s-det').classList.add('on');
+}
+
+function saveDet() {
+  const key = document.getElementById('detAiBtn').dataset.key;
+  if (key) saveItem(key);
+}
+
+// ===== TRADITION SELECT =====
+function selTrad(el, trad) {
+  document.querySelectorAll('.tc').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  currentTrad = trad;
+  initVerseList(trad);
+}
+
+// ===== LOT =====
+let lotIdx = -1;
+function shakeIt() {
+  const btn = document.getElementById('shakeBtn');
+  btn.classList.add('shaking');
+  setTimeout(()=>btn.classList.remove('shaking'), 600);
+  setTimeout(()=>{
+    let ni;
+    do { ni = Math.floor(Math.random()*LOTS.length); } while(ni===lotIdx && LOTS.length>1);
+    lotIdx = ni;
+    const l = LOTS[lotIdx];
+    document.getElementById('lotNum').textContent = l.n;
+    document.getElementById('lotQuote').textContent = l.q;
+    document.getElementById('lotSrc').textContent = l.s;
+    document.getElementById('lotInterp').textContent = l.i;
+    document.getElementById('lotAnalyzeBtn').onclick = ()=>openDet(l.key);
+    document.getElementById('lotResult').classList.add('on');
+  }, 650);
+}
+
+function saveLot() {
+  if (lotIdx>=0) saveItem(LOTS[lotIdx].key);
+}
+
+// ===== SEARCH =====
+function fc(el, filter) {
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  currentFilter = filter;
+}
+
+function doSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  const filterNote = currentFilter==='all' ? '一貫道（發一崇德）、儒家、道家、佛教、基督教' : ({yi:'一貫道（發一崇德）',cf:'儒家',tao:'道家',bd:'佛教',bi:'基督教'}[currentFilter]||'各大傳統');
+  if (q) sendPrompt(`請在${filterNote}的經典中搜尋與「${q}」相關的智慧，列出各典籍相關段落，並提供三層解析（字義、現代應用、跨典籍共鳴）`);
+  else sendPrompt(`請在${filterNote}的經典中，推薦五段最適合現代人修身養性的智慧，每段附簡短解析`);
+}
+
+// ===== SAVE =====
+function saveItem(key) {
+  if (!saved.includes(key)) {
+    saved.unshift(key);
+    localStorage.setItem('wisdom_saved', JSON.stringify(saved));
+  }
+  showToast('已收藏 🔖');
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+// ===== SEND PROMPT =====
+function sendPrompt(text) {
+  window.parent?.postMessage({type:'user_message',message:text},'*');
+}
+
+// ===== SERVICE WORKER =====
+function registerSW() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  }
+}
+
+// Enter key on search
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doSearch();
+});
+</script>
+</body>
+</html>
